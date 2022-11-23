@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 
 class RegisterController extends Controller
 {
@@ -75,14 +76,14 @@ class RegisterController extends Controller
     //     return view("auth.register");
     // }
 
-    public function register(Request $request){
-        if($request->isMethod('post')){
-            $data = $request->input();
-
-            $this->create($data);
-            return redirect('added');
-        }
+    public function registerView(){
         return view('auth.register');
+    }
+    public function registerPost(UserRequest $request){
+        $data = $request->input();
+        $request->session()->put('username',$data['username']);
+        $this->create($data);
+        return redirect('added');
     }
 
     public function added(){
